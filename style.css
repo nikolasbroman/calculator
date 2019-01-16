@@ -1,0 +1,146 @@
+html, body {
+    background: #077;
+    font-size: 30px;
+}
+
+div, input, button {
+    box-sizing: border-box;
+}
+
+#container {
+    margin: 1em auto 0;
+    max-width: 700px;
+}
+
+#expression {
+    display: block;
+    font-size: 1em;
+    background: #f7f7f7;
+    width: 100%;
+    margin-bottom: 0.3em;
+    padding: 0.3em 0.5em;
+    letter-spacing: 1px;
+    border: 2px solid #000;
+    border-radius: 3px;
+}
+
+#equals {
+    float: left;
+    font-size: 1em;
+    text-align: center;
+    color: #000;
+    background: #d7d7d7;
+    padding: 0.3em 0.5em;
+    width: 2em;
+    margin: 0;
+    height: 2em;
+    border: 2px solid #000;
+    border-right: none;
+    border-radius: 3px 0 0 3px;
+}
+
+#result {
+    float: right;
+    font-size: 1em;
+    background: #f7f7f7;
+    width:calc(100% - 2em);
+    height: 2em;
+    margin-bottom: 0.3em;
+    padding: 0.3em 0.5em;
+    letter-spacing: 1px;
+    border: 2px solid #000;
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+#primary-buttons {
+    display: inline-block;
+    max-width: calc(100% * 4 / 6 - 4px);
+    margin: 0;
+    padding: 0;
+    margin-right: 4px;
+    border: 1px solid #000;
+}
+
+#primary-buttons button {
+    width: calc(100% / 4);
+}
+
+#secondary-buttons {
+    display: inline-block;
+    max-width: calc(100% * 2 / 6 - 4px);
+    margin-left: 4px;
+    border: 1px solid #000;
+}
+
+
+
+[id^=parenthesis] {
+    background: #77b;
+    width: calc(100% / 2);
+}
+
+#undo,
+#clear,
+#ans {
+    background: #b33;
+    width: 100%;
+}
+
+button {
+    display: inline-block;
+    font-size: 1em;
+    padding: 0.3em 0.5em;
+    margin: 0;
+    background: none;
+    border: 1px solid #000;
+    transition: 0.1s;
+}
+
+button:focus {
+    outline: none;
+    border-color: rgba(255,255,255,0.5);;
+    box-shadow: inset 0 0 100px rgba(255,255,255,0.5);
+    transition: 0s;
+}
+
+[id^=number] {
+    background: #d7d7d7;
+}
+
+#symbol-dot {
+    background: #b7b7b7;
+}
+
+#symbol-equal {
+    background:#3d3;
+}
+
+#symbol-divison, 
+#symbol-multiplication, 
+#symbol-minus, 
+#symbol-plus {
+    background: #ee7;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 600px) {
+    #primary-buttons {
+        display: block;
+        max-width: 100%;
+        margin: 0 0 0.3em;
+    }
+
+    #secondary-buttons {
+        display: block;
+        max-width: 100%;
+        margin: 0;
+    }
+}

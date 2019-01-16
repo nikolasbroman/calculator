@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div id="container">
+
+        <input id="expression" type="text">
+        <div id="equals">=</div><input id="result" type="text" readonly>
+        <div class="clearfix"></div>
+        <div id="primary-buttons" >
+            <button id="number-7">
+                7</button><button id="number-8">
+                8</button><button id="number-9">
+                9</button><button id="symbol-divison">
+                ÷</button><button id="number-4">
+                4</button><button id="number-5">
+                5</button><button id="number-6">
+                6</button><button id="symbol-multiplication">
+                *</button><button id="number-1">
+                1</button><button id="number-2">
+                2</button><button id="number-3">
+                3</button><button id="symbol-minus">
+                -</button><button id="number-0">
+                0</button><button id="symbol-dot">
+                .</button><button id="symbol-equal">
+                =</button><button id="symbol-plus">
+                +</button>
+        </div><div id="secondary-buttons"><button id="parenthesis-begin">
+                (</button><button id="parenthesis-end">
+                )</button><button id="ans">
+                ans</button><button id="undo">
+                undo</button><button id="clear">
+                clear</button>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+
+<script>
+
+    let expression = document.getElementById("expression");
+    let result = document.getElementById("result");
+    let equalButtonPressed = 0;
+    let expressionInFocus = 0;
+
+    /* Undo button BEGIN */
+
+    let history = [""];
+
+    function expressionChange() {
+        history.push(expression.value);
+        if (history.length > 100) {
+            history.shift();
+        }
+    }
+
+    expression.addEventListener("input", expressionChange);
+
+    const undo = document.getElementById("undo");
+
+    undo.addEventListener("click", function () {
+        this.blur();
+        if (history.length > 1) {
+            let poppedValue = history.pop();
+            if (expression.value === poppedValue) {
+                expression.value = history.pop();
+            } else {
+                expression.value = poppedValue;
+            }
+        } else {
+            expression.value = "";
+        }
+        if (history.length === 0) {
+            history.push("");
+        }
+    });
+
+    /* Undo button END */
+
+    /* Clear button BEGIN */
+
+    const clear = document.getElementById("clear");
+    clear.addEventListener("click", function () {
+        this.blur();
+        if (expression.value === "") {
+            result.value = "";
+        } else {
+            expression.value = "";
+        }
+    });
+
+    /* Clear button END */
+
+
+    function containsAns(string) {
+        if (string.indexOf("ans") !== -1) {
+            return true;
+        }
+    }
+
+    function replaceAns(string) {
+        string = string.replace(/ans/gi, result.value)
+        return string;
+    }
+
+    function calculate() {
+        equal.blur();
+        if (containsAns(expression.value)) {
+            expression.value = replaceAns(expression.value);
+        }
+        result.value = eval(expression.value);
+        equalButtonPressed = 1;
+    }
+
+    function myEventListener(id, value) {
+        document.getElementById(id).addEventListener("click", function () {
+            this.blur();
+            if (equalButtonPressed === 1) {
+                expression.value = "";
+                equalButtonPressed = 0;
+            }
+            expression.value += value;
+            expressionChange(); //needed for undo button
+            
+        });
+    }
+
+    expression.addEventListener("focus", () => {
+        equalButtonPressed = 0;
+        expressionInFocus = 1;
+    });
+
+    expression.addEventListener("blur", () => {
+        expressionInFocus = 0;
+    });
+
+    myEventListener("number-7", 7);
+    myEventListener("number-8", 8);
+    myEventListener("number-9", 9);
+    myEventListener("number-4", 4);
+    myEventListener("number-5", 5);
+    myEventListener("number-6", 6);
+    myEventListener("number-1", 1);
+    myEventListener("number-2", 2);
+    myEventListener("number-3", 3);
+    myEventListener("number-0", 0);
+    myEventListener("number-0", 0);
+    myEventListener("symbol-dot", ".");
+    myEventListener("symbol-divison", "/");
+    myEventListener("symbol-multiplication", "*");
+    myEventListener("symbol-minus", "-");
+    myEventListener("symbol-plus", "+");
+    myEventListener("parenthesis-begin", "(");
+    myEventListener("parenthesis-end", ")");
+    myEventListener("ans", "ans");
+
+
+    const equal = document.getElementById("symbol-equal");
+    equal.addEventListener("click",calculate);
+
+
+    function keydownFunction(e) {
+        if (e.key === "Enter") {
+            calculate();
+            return;
+        }
+        if (expressionInFocus === 1) {
+            return;
+        }
+        if (equalButtonPressed === 1) {
+            expression.value = "";
+            equalButtonPressed = 0;
+        }
+        let newValue = "";
+        switch(true) {
+            case (e.key >=0 && e.key <=9):
+            case (e.key === "*"):
+            case (e.key === "/"):
+            case (e.key === "+"):
+            case (e.key === "-"):
+            case (e.key === "."):
+            case (e.key === "("):
+            case (e.key === ")"):
+                newValue = e.key;
+                break;
+            case (e.key === "a"):
+                newValue = "ans";
+                break;
+            case (e.key === "Backspace"):
+                expression.value = expression.value.slice(0,-1);
+                expressionChange();
+                return;
+        }
+        expression.value += newValue;
+        expressionChange();
+    }
+
+
+
+    window.addEventListener("keydown", keydownFunction);
+
+</script>
+
+
+</html>
